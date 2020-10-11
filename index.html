@@ -47,13 +47,13 @@
 
     <div class="container-fluid">
       <div class="row justify-content-start">
-        <div class="col-4">
+        <div class="col-2">
             <button type="button" id="connectButton" class="btn btn-success btn-lg">
               <i class="fab fa-usb"></i>
               Connect
             </button>  
         </div>
-        <div class="col-8">
+        <div class="col-2">
           <ul class="list-group deviceInfoList d-none fade-in">
             <li class="list-group-item bg-info">Device Information:</li>
             <li class="productName list-group-item"></li>
@@ -108,29 +108,45 @@
         
         constructor(deviceVar){
           this.device = deviceVar;
-          this.my8buf = new Uint8Array();
+          this.pibContent = new Uint8Array();
         }
 
         printDevice(){
           
         }
+        
+        concatTypedArrays(a, b) { // a, b TypedArray of same type
+            var c = new (a.constructor)(a.length + b.length);
+            c.set(a, 0);
+            c.set(b, a.length);
+            return c;
+        }
 
         async readPibData(){
           let blockCounter = 0;
-          let result = await this.device.controlTransferIn({
-              requestType: 'class',
-              recipient: 'interface',
-              request: 2,
-              value: DFU_BLOCK_PLC_PIB_START + blockCounter,
-              index: 0}, 512);
-          if (result.status !== 'ok')
-            return null;
-          
-          let arrayBuffer = result.data.buffer;
-          this.my8buf = new Uint8Array(arrayBuffer);
-          let responseLength = this.my8buf.length; 
-          console.log("OKKKKK my8buf :",this.my8buf,"length ",this.my8buf.length)
-          console.hex(this.my8buf)
+          let responseLength = 0;
+          do{
+            let result = await this.device.controlTransferIn({
+                requestType: 'class',
+                recipient: 'interface',
+                request: 2,
+                value: DFU_BLOCK_PLC_PIB_START + blockCounter,
+                index: 0}, 512);
+            if (result.status !== 'ok')
+              return null;
+            
+            let arrayBuffer = result.data.buffer;
+            let my8buf = new Uint8Array(arrayBuffer);
+
+            this.pibContent = this.concatTypedArrays(this.pibContent,my8buf);
+            console.warn("concated length : ",this.pibContent.length);
+            responseLength = my8buf.length; 
+            //console.log("Received my8buf :",my8buf,"length ",my8buf.length)
+            blockCounter++;
+          }while(responseLength == 512);
+
+          console.hex(this.pibContent)
+
         }
 
 
@@ -138,7 +154,6 @@
 
       };
 
-     
         let connectButtonElement = document.querySelector("#connectButton");
         let readPibButtonElement = document.querySelector("#readPibButton");
         let writePibButtonElement = document.querySelector("#writePibButton");
@@ -220,7 +235,7 @@
             readPibButtonElement.classList.remove("d-none")
             writePibButtonElement.classList.remove("d-none")
             upgradeFirmwareButtonElement.classList.remove("d-none")
-            connected = !connected; 
+          
               
            
             console.log("device.productName",device.productName);
@@ -236,7 +251,6 @@
         let percentage = 0;
         readPibButtonElement.addEventListener("click",async function(event){
         await pibManager.readPibData();
-          
           
           
           // progressElement.classList.remove("d-none");
