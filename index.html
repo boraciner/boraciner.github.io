@@ -26,19 +26,97 @@
       }
 
 
+      .slide-in-elliptic-top-fwd {
+        animation: slide-in-elliptic-top-fwd 2s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
+      }
       
+      @keyframes slide-in-elliptic-top-fwd {
+        0% {
+          transform: translateY(-600px) rotateX(-30deg) scale(0);
+          transform-origin: 50% 100%;
+          opacity: 0;
+        }
+        100% {
+          transform: translateY(0) rotateX(0) scale(1);
+          transform-origin: 50% 1400px;
+          opacity: 1;
+        }
+      }
+
+      .puff-in-center {
+          animation: puff-in-center 0.7s cubic-bezier(0.470, 0.000, 0.745, 0.715) both;
+      }
+      @keyframes puff-in-center {
+        0% {
+          transform: scale(2);
+          filter: blur(4px);
+          opacity: 0;
+        }
+        100% {
+          transform: scale(1);
+          filter: blur(0px);
+          opacity: 1;
+        }
+      }
 
       .carousel-control-next-icon:after
       {
         content: '>';
         font-size: 55px;
-        color: red;
+        color: blue;
       }
 
       .carousel-control-prev-icon:after {
         content: '<';
         font-size: 55px;
         color: blue;
+      }
+
+
+      .roll-in-left {
+        animation: roll-in-left 0.6s ease-out both;
+      }
+
+      @keyframes roll-in-left {
+        0% {
+          transform: translateX(800px) rotate(540deg);
+          opacity: 0;
+        }
+        100% {
+          transform: translateX(0) rotate(0deg);
+          opacity: 1;
+        }
+      }
+
+      .slide-in-blurred-top {
+        animation: slide-in-blurred-top 0.6s cubic-bezier(0.230, 1.000, 0.320, 1.000) both;
+      }
+
+      @keyframes slide-in-blurred-top {
+        0% {
+          transform: translateY(-1000px) scaleY(2.5) scaleX(0.2);
+          transform-origin: 50% 0%;
+          filter: blur(40px);
+          opacity: 0;
+        }
+        100% {
+          transform: translateY(0) scaleY(1) scaleX(1);
+          transform-origin: 50% 50%;
+          filter: blur(0);
+          opacity: 1;
+        }
+      }  
+
+      .fade-out {
+        animation: fade-out 1s ease-out both;
+      }
+      @keyframes fade-out {
+        0% {
+          opacity: 1;
+        }
+        100% {
+          opacity: 0;
+        }
       }
     </style>
   </head>
@@ -56,30 +134,40 @@
           </div>
         </div>
     </nav>
-
-    <div class="shadow-lg p-3 m-5 text-primary text-center bg-white rounded">Welcome To FoE-Charger Firmware Upgrade Website</div>
     
-    <p class="lead m-3">Please Follow the Instructions</p>
+    <div class="container-fluid ">
+      
+      <!--Logo and welcome text begin-->
+      <div class="row justify-content-start ">
+        <div class="col-lg-2 col-md-4 col-sm-12">    
+          <div class="puff-in-center m-3 ">
+            <img src="images/logo.png" class="rounded float-left" alt="...">
+          </div>
+        </div>
+        <div class="col-lg-8 col-md-8 col-sm-12">    
+          <div class="shadow-lg p-3 m-5 text-primary text-center bg-white rounded">Welcome To FoE-Charger Firmware Upgrade Website</div>
+        </div>
+      </div>
 
-    <div class="container-fluid">
-      <div class="row justify-content-start">
-        <div class="col-2">
-            <button type="button" id="connectButton" class="btn btn-success btn-lg">
+      <!--Logo and welcome text end-->
+
+
+
+      <div class="row justify-content-start ">
+        <div class="col-lg-3 col-md-8 col-sm-12">
+            <button type="button" id="connectButton" class="btn btn-success btn-lg fade-in">
               <i class="fab fa-usb"></i>
               Connect
             </button>
-            <div class="spinner-border text-primary d-none" role="status" id="loading">
-              <span class="sr-only">Loading...</span>
-            </div>  
         </div>
-        <div class="col-2">
+        <div class="col-lg-4 col-md-6 col-sm-6 mt-2">
           <ul class="list-group deviceInfoList d-none fade-in">
             <li class="list-group-item bg-warning">Device Information:</li>
             <li class="productName list-group-item"></li>
             <li class="manufacturerName list-group-item"></li>
           </ul>
         </div>
-        <div class="col-2">
+        <div class="col-lg-3 col-md-6 col-sm-3 mt-2">
           <div class="btn-group-vertical">
             <button type="button" id="readPibButton" class="btn btn-secondary d-none text-left fade-in" disabled><i class="fas fa-microchip"></i> Read PIB</button>
             <button type="button" id="writePibButton" class="btn btn-secondary d-none text-left fade-in" disabled><i class="fas fa-pen-square"></i> Write PIB</button>
@@ -88,148 +176,281 @@
         </div>
       </div>
       
-      <div class="row mt- d-none fade-in rawGeneralPIBData">
-        <div class="col-2">
-        </div>
-
-        <div class="col-2">
-          <div class="generalInfo ">
-            <p class="text-primary">PIB Version : <span id="pibVersion" class="text-secondary">2.1.23.4</span></p>
+      <div class="row justify-content-center text-center mt-4 fade-in d-none rawGeneralPIBData">
+        <div class="col-xl-3 col-lg-3 col-md-4 col-sm-6">     
+          <div class="alert alert-danger generalInfo" role="alert">
+            PIB Version : <span id="pibVersion" class="text-secondary">2.1.23.4</span>
           </div>
       </div>
-      <div class="col-2">
-        <div class="pevEvseInfo">
-          <p class="text-primary">Side : <span id="pibVersion" class="text-secondary ">EVSE</span></p>
+      <div class="col-xl-3 col-lg-3 col-md-4 col-sm-6">
+        <div class="alert alert-success pevEvseInfo" role="alert">
+          Side : <span id="pibVersion" class="text-secondary ">EVSE</span>
         </div>
       </div>
     </div>
+    <hr class="generalInfoDivider2  fade-in d-none"/>
+    <!---Main Menu Start-->
+    <div class="row justify-content-center text-center  mt-4 fade-in  d-none MainMenuButtons">
+      <div class="col-xl-8 col-lg-8 col-md-4 col-sm-6">
+        <div class="btn-group" role="group" aria-label="Basic example">
+          <button type="button" class="btn btn-outline-primary">Local Device Config</button>
+          <button type="button" class="btn btn-outline-secondary">Qos Parameters</button>
+          <button type="button" class="btn btn-outline-warning">V3.0 Config</button>
+          <button type="button" class="btn btn-outline-danger">PEV / EVSE Configuration</button>
+        </div>
+      </div>
+    </div>
+    <!---Main Menu End-->
+
   </div>
-  <hr class="generalInfoDivider2 d-none fade-in"/>
-    <!--MAC MFG Start-->
-    <div class="container mt-4 d-none fade-in pageGeneralInfo">
-    <div class="row ">
+
+
+
+
+    <div id="carouselExampleIndicators" class="carousel slide m-5 d-none" data-interval="false">
+    <div class="carousel-inner">
+      <div class="carousel-item active" data-interval="false">
+       <!--MAC MFG Start------------------------------------------------------------------------------------->
+            <div class="container-fluid  mt-4  fade-in pageGeneralInfo ">
+              <div class="row justify-content-center text-center">
+              <div class="col-lg-4 col-sm-10">
+                <div class="input-group input-group-sm mb-3">
+                    <div class="input-group-prepend ">
+                      <span class="input-group-text " id="mac-inputGroup-sizing-sm">MAC</span>
+                    </div>
+                    <input type="text" class="form-control" aria-label="" value="00:01:87:08:25:17" aria-describedby="inputGroup-sizing-sm">
+                </div>
+              </div>
+                <div class="col-lg-4 col-sm-10">
+                  <div class="input-group input-group-sm mb-3">
+                    <div class="input-group-prepend">
+                      <span class="input-group-text" id="mfg-inputGroup-sizing-sm">MFG</span>
+                    </div>
+                    <input type="text" class="form-control" aria-label="" value="Pontis EMC GmbH" aria-describedby="inputGroup-sizing-sm">
+                  </div>
+                </div>
+              </div>
+              <!--MAC MFG END--> 
+              
+              <!--DAK NMK Start-->
+              <div class="row justify-content-center text-center">
+                <div class="col-lg-4 col-sm-10">
+                  <p class="text-primary ">DAK : <span id="dak" class="text-secondary ">B9:AE:06:5B:B2:A6:B0:25:AC:BE:94:34:EC:B8:86:F9</span></p>
+                </div>
+                <div class="col-lg-4 col-sm-10">
+                  <p class="text-primary">NMK : <span id="nmk" class="text-secondary ">B9:AE:06:5B:B2:A6:B0:25:AC:BE:94:34:EC:B8:86:F9</span></p>
+                </div>
+              </div>
+              <!--DAK NMK Start-->
+              
+          
+              <!--USR NET Start-->
+              <div class="row justify-content-center text-center ">
+                <div class="col-lg-4 col-sm-10">
+                  <div class="input-group input-group-sm mb-3">
+                    <div class="input-group-prepend">
+                      <span class="input-group-text" id="usr-inputGroup-sizing-sm">USR</span>
+                    </div>
+                    <input type="text" class="form-control" aria-label="" value="PEV EMU SIDE" aria-describedby="inputGroup-sizing-sm">
+                  </div>
+                </div>
+                <div class="col-lg-4 col-sm-10"></div>
+              </div>
+              <!--USR NET END--> 
+          
+              <!--CCO Selection Coexist Mode Selection Start-->
+              <div class="row justify-content-center text-center">
+                <div class="col-lg-4 col-sm-10">
+                  <p class="text-primary">CCo Selection : <span id="ccoselection" class="text-secondary ">Always</span></p>
+                </div>
+                <div class="col-lg-4 col-sm-10">
+                  <p class="text-primary">Coexist Mode Selection : <span id="coexistmodeselection" class="text-secondary ">00</span></p>
+                </div>
+              </div>
+              <!--CCO Selection Coexist Mode Selection End--> 
+          
+              <!--PL Freq Selection Preffered NID Start-->
+              <div class="row justify-content-center text-center">
+                <div class="col-lg-4 col-sm-10">
+                  <p class="text-primary">PL Freq Selection : <span id="plfreqselection" class="text-secondary ">00</span></p>
+                </div>
+                <div class="col-lg-4 col-sm-10">
+                  <p class="text-primary">Preffered NID Start : <span id="prefferednidstart" class="text-secondary ">AB:04:31:E7:A2:46:05</span></p>
+                </div>
+              </div>
+              <!--PL Freq Selection Preffered NID End--> 
+          
+          
+              <!--Auto FW Upgradable MDU Configuration Start-->
+              <div class="row justify-content-center text-center">
+                <div class="col-lg-4 col-sm-10">
+                  <p class="text-primary">Auto FW Upgradable(AVLN) : <span id="autofwupgradableAVLN" class="text-secondary">01</span></p>
+                </div>
+                <div class="col-lg-4 col-sm-10">
+                  <p class="text-primary">MDU Configuration : <span id="mduconfiguration" class="text-secondary ">00</span></p>
+                </div>
+              </div>
+              <!--Auto FW Upgradable MDU Configuration End--> 
+          
+              <!--MDU Role Communications Media Start-->
+              <div class="row justify-content-center text-center ">
+                <div class="col-lg-4 col-sm-10">
+                  <p class="text-primary">MDU Role : <span id="mdurole" class="text-secondary">01</span></p>
+                </div>
+                <div class="col-lg-4 col-sm-10">
+                  <p class="text-primary">Communications Media : <span id="communicationsmedia" class="text-secondary ">00</span></p>
+                </div>
+              </div>
+              <!--MDU Role Communications Media End--> 
+          
+          
+              <!--AFE Gain AFE Default Start-->
+          
+
+              <div class="row justify-content-center text-center mb-5">
+                <div class="col-lg-4 col-sm-10">
+                  <form>
+                    <div class="form-group text-primary">
+                      <label for="formControlRange">AFE Gain : <span id="afegainnumber">33</span></label>
+                      <input type="range" class="form-control-range " id="formControlRange">
+                    </div>
+                  </form>
+                </div>
+                <div class="col-lg-4 col-sm-10 mt-3">
+                  <button type="button" class="btn btn-dark">AFE Default</button>
+                </div>
+              </div>
+              <!--AFE Gain AFE Default End--------------------------------------------------------------------> 
+            </div>
+      </div>
+      <div class="carousel-item mb-5" data-interval="false">
+        <!--MAC MFG Start------------------------------------------------------------------------------------->
+        <div class="container-fluid  mt-4  fade-in pageGeneralInfo ">
+          <div class="row justify-content-center text-center">
+          <div class="col-lg-4 col-sm-10">
+            <div class="input-group input-group-sm mb-3">
+                <div class="input-group-prepend ">
+                  <span class="input-group-text " id="mac-inputGroup-sizing-sm">MAC</span>
+                </div>
+                <input type="text" class="form-control" aria-label="" value="00:01:87:08:25:17" aria-describedby="inputGroup-sizing-sm">
+            </div>
+          </div>
+            <div class="col-lg-4 col-sm-10">
+              <div class="input-group input-group-sm mb-3">
+                <div class="input-group-prepend">
+                  <span class="input-group-text" id="mfg-inputGroup-sizing-sm">MFG</span>
+                </div>
+                <input type="text" class="form-control" aria-label="" value="Pontis EMC GmbH" aria-describedby="inputGroup-sizing-sm">
+              </div>
+            </div>
+          </div>
+          <!--MAC MFG END--> 
+          
+          <!--DAK NMK Start-->
+          <div class="row justify-content-center text-center">
+            <div class="col-lg-4 col-sm-10">
+              <p class="text-primary ">DAK : <span id="dak" class="text-secondary ">B9:AE:06:5B:B2:A6:B0:25:AC:BE:94:34:EC:B8:86:F9</span></p>
+            </div>
+            <div class="col-lg-4 col-sm-10">
+              <p class="text-primary">NMK : <span id="nmk" class="text-secondary ">B9:AE:06:5B:B2:A6:B0:25:AC:BE:94:34:EC:B8:86:F9</span></p>
+            </div>
+          </div>
+          <!--DAK NMK Start-->
+          
+      
+          <!--USR NET Start-->
+          <div class="row justify-content-center text-center ">
+            <div class="col-lg-4 col-sm-10">
+              <div class="input-group input-group-sm mb-3">
+                <div class="input-group-prepend">
+                  <span class="input-group-text" id="usr-inputGroup-sizing-sm">USR</span>
+                </div>
+                <input type="text" class="form-control" aria-label="" value="PEV EMU SIDE" aria-describedby="inputGroup-sizing-sm">
+              </div>
+            </div>
+            <div class="col-lg-4 col-sm-10"></div>
+          </div>
+          <!--USR NET END--> 
+      
+          <!--CCO Selection Coexist Mode Selection Start-->
+          <div class="row justify-content-center text-center">
+            <div class="col-lg-4 col-sm-10">
+              <p class="text-primary">CCo Selection : <span id="ccoselection" class="text-secondary ">Always</span></p>
+            </div>
+            <div class="col-lg-4 col-sm-10">
+              <p class="text-primary">Coexist Mode Selection : <span id="coexistmodeselection" class="text-secondary ">00</span></p>
+            </div>
+          </div>
+          <!--CCO Selection Coexist Mode Selection End--> 
+      
+          <!--PL Freq Selection Preffered NID Start-->
+          <div class="row justify-content-center text-center">
+            <div class="col-lg-4 col-sm-10">
+              <p class="text-primary">PL Freq Selection : <span id="plfreqselection" class="text-secondary ">00</span></p>
+            </div>
+            <div class="col-lg-4 col-sm-10">
+              <p class="text-primary">Preffered NID Start : <span id="prefferednidstart" class="text-secondary ">AB:04:31:E7:A2:46:05</span></p>
+            </div>
+          </div>
+          <!--PL Freq Selection Preffered NID End--> 
+      
+      
+          <!--Auto FW Upgradable MDU Configuration Start-->
+          <div class="row justify-content-center text-center">
+            <div class="col-lg-4 col-sm-10">
+              <p class="text-primary">Auto FW Upgradable(AVLN) : <span id="autofwupgradableAVLN" class="text-secondary">01</span></p>
+            </div>
+            <div class="col-lg-4 col-sm-10">
+              <p class="text-primary">MDU Configuration : <span id="mduconfiguration" class="text-secondary ">00</span></p>
+            </div>
+          </div>
+          <!--Auto FW Upgradable MDU Configuration End--> 
+      
+          <!--MDU Role Communications Media Start-->
+          <div class="row justify-content-center text-center ">
+            <div class="col-lg-4 col-sm-10">
+              <p class="text-primary">MDU Role : <span id="mdurole" class="text-secondary">01</span></p>
+            </div>
+            <div class="col-lg-4 col-sm-10">
+              <p class="text-primary">Communications Media : <span id="communicationsmedia" class="text-secondary ">00</span></p>
+            </div>
+          </div>
+          <!--MDU Role Communications Media End--> 
+      
+      
+          <!--AFE Gain AFE Default Start-->
+      
+
+          <div class="row justify-content-center text-center mb-5">
+            <div class="col-lg-4 col-sm-10">
+              <form>
+                <div class="form-group text-primary">
+                  <label for="formControlRange">AFE Gain : <span id="afegainnumber">33</span></label>
+                  <input type="range" class="form-control-range " id="formControlRange">
+                </div>
+              </form>
+            </div>
+            <div class="col-lg-4 col-sm-10 mt-3">
+              <button type="button" class="btn btn-dark">AFE Default</button>
+            </div>
+          </div>
+          <!--AFE Gain AFE Default End--------------------------------------------------------------------> 
+        </div>
+      </div>
      
-      <div class="col-4 ">
-        <div class="input-group input-group-sm mb-3">
-          <div class="input-group-prepend">
-            <span class="input-group-text" id="mac-inputGroup-sizing-sm">MAC</span>
-          </div>
-          <input type="text" class="form-control" aria-label="" value="00:01:87:08:25:17" aria-describedby="inputGroup-sizing-sm">
-        </div>
-      </div>
-      <div class="col-4">
-        <div class="input-group input-group-sm mb-3">
-          <div class="input-group-prepend">
-            <span class="input-group-text" id="mfg-inputGroup-sizing-sm">MFG</span>
-          </div>
-          <input type="text" class="form-control" aria-label="" value="Pontis EMC GmbH" aria-describedby="inputGroup-sizing-sm">
-        </div>
-      </div>
     </div>
-    <!--MAC MFG END--> 
-    
-    <!--DAK NMK Start-->
-    <div class="row">
-      <div class="col-4">
-        <p class="text-primary">DAK : <span id="dak" class="text-secondary ">B9:AE:06:5B:B2:A6:B0:25:AC:BE:94:34:EC:B8:86:F9</span></p>
-      </div>
-      <div class="col-4">
-        <p class="text-primary">NMK : <span id="nmk" class="text-secondary ">B9:AE:06:5B:B2:A6:B0:25:AC:BE:94:34:EC:B8:86:F9</span></p>
-      </div>
-    </div>
-    <!--DAK NMK Start-->
-    
-
-     <!--USR NET Start-->
-     <div class="row ">
-      <div class="col-4">
-        <div class="input-group input-group-sm mb-3">
-          <div class="input-group-prepend">
-            <span class="input-group-text" id="usr-inputGroup-sizing-sm">USR</span>
-          </div>
-          <input type="text" class="form-control" aria-label="" value="PEV EMU SIDE" aria-describedby="inputGroup-sizing-sm">
-        </div>
-      </div>
-    </div>
-    <!--USR NET END--> 
-
-    <!--CCO Selection Coexist Mode Selection Start-->
-    <div class="row ">
-      <div class="col-4">
-        <p class="text-primary">CCo Selection : <span id="ccoselection" class="text-secondary ">Always</span></p>
-      </div>
-      <div class="col-4">
-        <p class="text-primary">Coexist Mode Selection : <span id="coexistmodeselection" class="text-secondary ">00</span></p>
-      </div>
-    </div>
-    <!--CCO Selection Coexist Mode Selection End--> 
-
-    <!--PL Freq Selection Preffered NID Start-->
-    <div class="row ">
-      <div class="col-4">
-        <p class="text-primary">PL Freq Selection : <span id="plfreqselection" class="text-secondary ">00</span></p>
-      </div>
-      <div class="col-4">
-        <p class="text-primary">Preffered NID Start : <span id="prefferednidstart" class="text-secondary ">AB:04:31:E7:A2:46:05</span></p>
-      </div>
-    </div>
-    <!--PL Freq Selection Preffered NID End--> 
-
-
-     <!--Auto FW Upgradable MDU Configuration Start-->
-     <div class="row ">
-      <div class="col-4">
-        <p class="text-primary">Auto FW Upgradable(AVLN) : <span id="autofwupgradableAVLN" class="text-secondary">01</span></p>
-      </div>
-      <div class="col-4">
-        <p class="text-primary">MDU Configuration : <span id="mduconfiguration" class="text-secondary ">00</span></p>
-      </div>
-    </div>
-    <!--Auto FW Upgradable MDU Configuration End--> 
-
-     <!--MDU Role Communications Media Start-->
-     <div class="row ">
-      <div class="col-4">
-        <p class="text-primary">MDU Role : <span id="mdurole" class="text-secondary">01</span></p>
-      </div>
-      <div class="col-4">
-        <p class="text-primary">Communications Media : <span id="communicationsmedia" class="text-secondary ">00</span></p>
-      </div>
-    </div>
-    <!--MDU Role Communications Media End--> 
-
-
-     <!--AFE Gain AFE Default Start-->
-     <div class="row ">
-      <div class="col-4">
-        <form>
-          <div class="form-group text-primary">
-            <label for="formControlRange">Example Range input</label>
-            <input type="range" class="form-control-range " id="formControlRange">
-          </div>
-        </form>
-      </div>
-      <div class="col-4">
-        <button type="button" class="btn btn-dark">Default</button>
-      </div>
-    </div>
-    <!--AFE Gain AFE Default End--> 
+    <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+      <span class="sr-only">Previous</span>
+    </a>
+    <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+      <span class="carousel-control-next-icon" aria-hidden="true"></span>
+      <span class="sr-only">Next</span>
+    </a>
   </div>
-  <hr class="generalInfoDivider d-none fade-in"/>
-   
-  <nav aria-label="..." class="d-none fade-in MainMenuButtons">
-      <ul class="pagination pagination-lg justify-content-center ">
-        <li class="page-item active" aria-current="page">
-          <span class="page-link">
-            General Info
-            <span class="sr-only">(current)</span>
-          </span>
-        </li>
-        <li class="page-item"><a class="page-link" href="#">Local Config</a></li>
-        <li class="page-item"><a class="page-link" href="#">QoS Parameters</a></li>
-        <li class="page-item"><a class="page-link" href="#">PEV / EVSE Config</a></li>
-      </ul>
-    </nav>
+
+    
+  
      <!--Navigation Buttons End-->
 
     <div class="fixed-bottom container-fluid text-right">
@@ -297,6 +518,10 @@
           console.log(this.pibContent);
         }
 
+        
+        
+
+
       
 
         
@@ -308,13 +533,12 @@
         let generalInfoDividerElement = document.querySelector(".generalInfoDivider");
         let generalInfoDividerElement2 = document.querySelector(".generalInfoDivider2");
         let MainMenuButtonsElement = document.querySelector(".MainMenuButtons");
-        
+        let carouselExampleIndicatorsElement = document.querySelector("#carouselExampleIndicators");
 
         let connectButtonElement = document.querySelector("#connectButton");
         let readPibButtonElement = document.querySelector("#readPibButton");
         let writePibButtonElement = document.querySelector("#writePibButton");
         let upgradeFirmwareButtonElement = document.querySelector("#upgradeFirmwareButton");
-        let loadingElement = document.querySelector("#loading");
         
         let deviceInfoListElement = document.querySelector(".deviceInfoList");
         let productNameElement = document.querySelector(".productName");
@@ -331,8 +555,6 @@
             this.innerHTML  = "<i class=\"fab fa-usb\"></i> Connect"; 
             this.classList.add("btn-success")
             this.classList.remove("btn-danger")
-
-
             
             deviceInfoListElement.classList.add("d-none")
             readPibButton.classList.add("d-none", "btn-secondary")
@@ -342,7 +564,10 @@
             readPibButtonElement.classList.add("d-none")
             writePibButtonElement.classList.add("d-none")
             upgradeFirmwareButtonElement.classList.add("d-none")
-
+            pageGeneralInfoElement.classList.add("d-none");
+            rawGeneralPIBDataElement.classList.add("d-none");
+            MainMenuButtonsElement.classList.add("d-none");
+            carouselExampleIndicatorsElement.classList.add("d-none");
           
 
           }  
@@ -390,31 +615,18 @@
             writePibButtonElement.classList.remove("d-none")
             upgradeFirmwareButtonElement.classList.remove("d-none")
           
-              
-           
-            console.log("device.productName",device.productName);
-            console.log("device.productName",device.manufacturerName);
-            
-
-            
           }
 
           connected = !connected;  
         });
 
         let percentage = 0;
-        readPibButtonElement.addEventListener("click",async function(event){
-          loadingElement.classList.remove("d-none");
+          readPibButtonElement.addEventListener("click",async function(event){
           pageGeneralInfoElement.classList.remove("d-none");
           rawGeneralPIBDataElement.classList.remove("d-none");
           MainMenuButtonsElement.classList.remove("d-none");
-          generalInfoDividerElement.classList.remove("d-none");
-          generalInfoDividerElement2.classList.remove("d-none");
+          carouselExampleIndicatorsElement.classList.remove("d-none");
 
-
-          setTimeout(() => {
-            loadingElement.classList.add("d-none");
-          }, 1000);
           await pibManager.readPibData();
           
         });
