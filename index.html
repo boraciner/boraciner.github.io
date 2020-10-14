@@ -179,12 +179,12 @@
       <div class="row justify-content-center text-center mt-4 fade-in d-none rawGeneralPIBData">
         <div class="col-xl-3 col-lg-3 col-md-4 col-sm-6">     
           <div class="alert alert-danger generalInfo" role="alert">
-            PIB Version : <span id="pibVersion" class="text-secondary">2.1.23.4</span>
+            PIB Version : <span id="pibVersion" class="text-secondary">0.0</span>
           </div>
       </div>
       <div class="col-xl-3 col-lg-3 col-md-4 col-sm-6">
         <div class="alert alert-success pevEvseInfo" role="alert">
-          Side : <span id="pibVersion" class="text-secondary ">EVSE</span>
+          Side : <span id="pevEvseSide" class="text-secondary ">EVSE</span>
         </div>
       </div>
     </div>
@@ -475,14 +475,58 @@
                             ' '.repeat((15 - i % 16) * 3) + Array.from(a).splice(i - i % 16, 16).reduce((r, v) => 
                             r + (v > 31 && v < 127 || v > 159 ? String.fromCharCode(v) : '.'), '  ') + '\n' : ''), ''));
 
-      class PIBManager{
+      
+                            class PIBManager{
         
         constructor(deviceVar){
           this.device = deviceVar;
           this.pibContent = new Uint8Array();
+          this.pibVersionString = ""
+        
         }
 
         
+        convert_u32(Uint8Arr) {
+            Uint8Arr = Uint8Arr.reverse();
+            let view = new DataView(Uint8Arr.buffer)
+
+            return view.getUint32();
+        }
+
+        convert_u16(Uint8Arr) {
+            Uint8Arr = Uint8Arr.reverse();
+            let view = new DataView(Uint8Arr.buffer)
+
+            return view.getUint16();
+        }
+
+        convert_u8(Uint8Arr) {
+            Uint8Arr = Uint8Arr.reverse();
+            let view = new DataView(Uint8Arr.buffer)
+
+            return view.getUint8();
+        }        
+
+        convert_32(Uint8Arr) {
+            Uint8Arr = Uint8Arr.reverse();
+            let view = new DataView(Uint8Arr.buffer)
+
+            return view.getInt32();
+        }
+
+        convert_16(Uint8Arr) {
+            Uint8Arr = Uint8Arr.reverse();
+            let view = new DataView(Uint8Arr.buffer)
+
+            return view.getInt16();
+        }
+
+        convert_8(Uint8Arr) {
+            Uint8Arr = Uint8Arr.reverse();
+            let view = new DataView(Uint8Arr.buffer)
+
+            return view.getInt8();
+        } 
 
         concatTypedArrays(a, b) { // a, b TypedArray of same type
             var c = new (a.constructor)(a.length + b.length);
@@ -515,18 +559,42 @@
           }while(responseLength == 512);
 
           console.hex(this.pibContent);
-          console.log(this.pibContent);
+          //console.log(this.pibContent);
+
+          this.parsePIBBlocks(this.pibContent);
         }
 
-        
-        
 
+        parsePIBBlocks(myByteArray){
+            this.pibVersionString = new TextDecoder("utf-8").decode(myByteArray.slice(512,534));
+            
+            
+            let nextHeaderAddress = 0
+            do{
+                //Next Header Address
+                let nextHeaderAddressArr = myByteArray.slice(nextHeaderAddress + 28 ,nextHeaderAddress + 32);
+                //Block Size
+                let nextImageLength = this.convert_u32(myByteArray.slice(nextHeaderAddress + 16 ,nextHeaderAddress + 20))
+                //Image Type
+                let imageType = this.convert_u32(myByteArray.slice(nextHeaderAddress + 36 ,nextHeaderAddress + 40))
+                console.log("nextHeaderAddress:" ,nextHeaderAddress," Header Size : 96 ","nextImageLength",nextImageLength, " Block Size :",(nextImageLength+96));
+                console.warn("imageType:" ,imageType);
+                
 
-      
+                
+                nextHeaderAddress = this.convert_32(nextHeaderAddressArr)
+            }while(nextHeaderAddress > 0)
+            
+            console.log("Total PIB File Length:" + myByteArray.length);
+            console.log("pibVersionString:" + this.pibVersionString);
+        }
 
-        
-
+        getPibVersionString(){
+            return this.pibVersionString;
+        }
       };
+
+
 
         let pageGeneralInfoElement = document.querySelector(".pageGeneralInfo");
         let rawGeneralPIBDataElement = document.querySelector(".rawGeneralPIBData");
@@ -628,6 +696,8 @@
           carouselExampleIndicatorsElement.classList.remove("d-none");
 
           await pibManager.readPibData();
+
+          document.querySelector("#pibVersion").innerHTML  = pibManager.getPibVersionString();
           
         });
 
