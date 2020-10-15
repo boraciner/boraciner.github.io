@@ -650,9 +650,9 @@
             productNameElement.innerHTML  = device.productName; 
             manufacturerNameElement.innerHTML  = device.manufacturerName;
 
-            this.innerHTML  = "<i class=\"fab fa-usb\"></i> Disconnect"; 
-            this.classList.remove("btn-success")
-            this.classList.add("btn-danger")
+            connectButtonElement.innerHTML  = "<i class=\"fab fa-usb\"></i> Disconnect"; 
+            connectButtonElement.classList.remove("btn-success")
+            connectButtonElement.classList.add("btn-danger")
 
             readPibButton.classList.remove("d-none", "btn-secondary")
             readPibButton.removeAttribute("disabled")
