@@ -311,8 +311,8 @@
                 <div class="col-lg-4 col-sm-10">
                   <form>
                     <div class="form-group text-primary">
-                      <label for="formControlRange">AFE Gain : <span id="afegainnumber">33</span></label>
-                      <input type="range" class="form-control-range " id="formControlRange">
+                      <label for="formControlRange2">AFE Gain : <span id="afegainnumber">33</span></label>
+                      <input type="range" class="form-control-range " id="formControlRange2">
                     </div>
                   </form>
                 </div>
@@ -694,18 +694,21 @@
           }
         });
 
-        let percentage = 0;
-          readPibButtonElement.addEventListener("click",async function(event){
-          pageGeneralInfoElement.classList.remove("d-none");
-          rawGeneralPIBDataElement.classList.remove("d-none");
-          MainMenuButtonsElement.classList.remove("d-none");
-          carouselExampleIndicatorsElement.classList.remove("d-none");
 
-          await pibManager.readPibData();
 
-          document.querySelector("#pibVersion").innerHTML  = pibManager.getPibVersionString();
+
+      let percentage = 0;
+        readPibButtonElement.addEventListener("click",async function(event){
+        pageGeneralInfoElement.classList.remove("d-none");
+        rawGeneralPIBDataElement.classList.remove("d-none");
+        MainMenuButtonsElement.classList.remove("d-none");
+        carouselExampleIndicatorsElement.classList.remove("d-none");
+
+        await pibManager.readPibData();
+
+        document.querySelector("#pibVersion").innerHTML  = pibManager.getPibVersionString();
           
-        });
+      });
 
     </script>
 
