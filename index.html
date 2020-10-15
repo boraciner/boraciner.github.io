@@ -8,6 +8,7 @@
 
     <title>Pontis EMC | FoE-Charger Firmware</title>
     <script src="https://kit.fontawesome.com/ee6ade3482.js" crossorigin="anonymous"></script>
+    
     <style>
       .fade-in{
         opacity: 0;
@@ -169,8 +170,9 @@
         </div>
         <div class="col-lg-3 col-md-6 col-sm-3 mt-2">
           <div class="btn-group-vertical">
-            <button type="button" id="readPibButton" class="btn btn-secondary d-none text-left fade-in" disabled><i class="fas fa-microchip"></i> Read PIB</button>
+            <button type="button" id="readPibButton" class="btn btn-primary d-none text-left fade-in" ><i class="fas fa-microchip"></i> Read PIB</button>
             <button type="button" id="writePibButton" class="btn btn-secondary d-none text-left fade-in" disabled><i class="fas fa-pen-square"></i> Write PIB</button>
+            <button type="button" id="upgradeApplicationButton" class="btn btn-primary d-none text-left fade-in" ><i class="fas fa-business-time"></i> Upgrade Application</button>
             <button type="button" id="upgradeFirmwareButton" class="btn btn-secondary d-none text-left fade-in" disabled><i class="fas fa-wrench"></i> Upgrade Firmware</button>
           </div>
         </div>
@@ -205,7 +207,29 @@
   </div>
 
 
+  <div class="container-fluid  applicationUpdatePage d-none mt-5 fade-in">
+    <div class="row justify-content-center  ">
+      <div class="col-lg-4 col-md-4 col-sm-8">   
+        <div class="input-group">
+          <div class="custom-file">
+            <input type="file" class="custom-file-input" id="inputGroupFile04" aria-describedby="inputGroupFileAddon04">
+            <label class="custom-file-label" for="inputGroupFile04">Choose Application Firmware File</label>
+          </div>
+          <div class="input-group-append">
+            <button class="btn btn-primary" type="button" id="inputGroupFileAddon04">Upgrade</button>
+          </div>
+        </div>      
+      </div>
+      <div class="col-lg-1 col-md-1 col-sm-1">
+        <div class="spinner-border text-danger d-none" role="status" id="fileIsLoading">
+          <span class="sr-only">Loading...</span>
+        </div>
+      </div>   
+    </div>
+  </div>
 
+  
+  
 
     <div id="carouselExampleIndicators" class="carousel slide m-5 d-none" data-interval="false">
     <div class="carousel-inner">
@@ -465,6 +489,7 @@
    
 
     <script>
+      
       const DFU_BLOCK_PLC_PIB_START = 2000;
       const BUFFER_SIZE = 512;
       const DFU_REQ_UPLOAD = 2;
@@ -474,7 +499,39 @@
                             c.toString(16).padStart(2, 0) + (i === a.length - 1 || i % 16 === 15 ? 
                             ' '.repeat((15 - i % 16) * 3) + Array.from(a).splice(i - i % 16, 16).reduce((r, v) => 
                             r + (v > 31 && v < 127 || v > 159 ? String.fromCharCode(v) : '.'), '  ') + '\n' : ''), ''));
+      class ApplicationUpdater{
 
+        constructor(deviceVar){
+          this.device = deviceVar;
+          
+
+        }
+
+        Update(myByteArray){
+
+          console.log("Application Updater | Update")
+
+
+          let blockCounter = 0;
+          let responseLength = 0;
+          
+          let result = this.device.controlTransferOut({
+              requestType: 'class',
+              recipient: 'interface',
+              request: 1,
+              value: blockCounter,
+              index: 0}, myByteArray.slice(blockCounter,blockCounter+512));
+          console.log("RESULT",result)
+
+
+
+
+
+
+
+
+        }
+      };
       
     class PIBManager{
         
@@ -615,16 +672,45 @@
         let readPibButtonElement = document.querySelector("#readPibButton");
         let writePibButtonElement = document.querySelector("#writePibButton");
         let upgradeFirmwareButtonElement = document.querySelector("#upgradeFirmwareButton");
-        
+        let upgradeApplicationButtonElement = document.querySelector("#upgradeApplicationButton");
         let deviceInfoListElement = document.querySelector(".deviceInfoList");
         let productNameElement = document.querySelector(".productName");
         let manufacturerNameElement = document.querySelector(".manufacturerName");
-
+        let applicationUpdatePageElements = document.querySelectorAll(".applicationUpdatePage")
         
         var intervalVar;
         var device;
 
         let pibManager = {};
+        let applicationUpdater = {};
+
+        var file = "";
+
+        document.getElementById('inputGroupFileAddon04').onclick = function(){
+          if(file!==""){ 
+            var reader = new FileReader();
+            reader.onload = function(progressEvent){
+              console.log("Pressed 3")
+              var arrayBuffer = reader.result
+              var bytes = new Uint8Array(arrayBuffer);
+              
+              
+              console.log("Pressed 4")
+              setTimeout(() => {
+                document.querySelector("#fileIsLoading").classList.add("d-none")
+              }, 1000); 
+              applicationUpdater.Update(bytes)
+              
+            };
+            console.log("Pressed 1")
+            document.querySelector("#fileIsLoading").classList.remove("d-none")
+            reader.readAsArrayBuffer(file);
+            console.log("Pressed 2")
+          }
+        };
+        document.getElementById('inputGroupFile04').onchange = function(){
+          file = this.files[0];
+        };
 
         function DisconnectProcessUI(){
             connectButtonElement.innerHTML  = "<i class=\"fab fa-usb\"></i> Connect"; 
@@ -632,17 +718,14 @@
             connectButtonElement.classList.remove("btn-danger")
             
             deviceInfoListElement.classList.add("d-none")
-            readPibButton.classList.add("d-none", "btn-secondary")
-            readPibButton.setAttribute("disabled","")
-            readPibButton.classList.remove("btn-primary")
+            readPibButton.classList.add("d-none")
                 
             readPibButtonElement.classList.add("d-none")
             writePibButtonElement.classList.add("d-none")
             upgradeFirmwareButtonElement.classList.add("d-none")
-            pageGeneralInfoElement.classList.add("d-none");
-            rawGeneralPIBDataElement.classList.add("d-none");
-            MainMenuButtonsElement.classList.add("d-none");
-            carouselExampleIndicatorsElement.classList.add("d-none");
+            upgradeApplicationButtonElement.classList.add("d-none")
+            HideReadPIBPage();
+            HideApplicationFirmwareUpdatePage();
             
         }
         function ConnectProcessUI(){
@@ -654,15 +737,52 @@
             connectButtonElement.classList.remove("btn-success")
             connectButtonElement.classList.add("btn-danger")
 
-            readPibButton.classList.remove("d-none", "btn-secondary")
-            readPibButton.removeAttribute("disabled")
-            readPibButton.classList.add("btn-primary")
+            readPibButton.classList.remove("d-none")
+
+
                 
             readPibButtonElement.classList.remove("d-none")
             writePibButtonElement.classList.remove("d-none")
             upgradeFirmwareButtonElement.classList.remove("d-none")
+            upgradeApplicationButtonElement.classList.remove("d-none")
             
         }
+
+        function ShowReadPIBPage(){
+          pageGeneralInfoElement.classList.remove("d-none");
+          rawGeneralPIBDataElement.classList.remove("d-none");
+          MainMenuButtonsElement.classList.remove("d-none");
+          carouselExampleIndicatorsElement.classList.remove("d-none");
+        }
+
+        function HideReadPIBPage(){
+          pageGeneralInfoElement.classList.add("d-none");
+          rawGeneralPIBDataElement.classList.add("d-none");
+          MainMenuButtonsElement.classList.add("d-none");
+          carouselExampleIndicatorsElement.classList.add("d-none");
+        }
+
+        function ShowApplicationFirmwareUpdatePage(){
+          
+          HideReadPIBPage();
+
+          applicationUpdatePageElements.forEach(element=>{
+            element.classList.remove("d-none");
+          });
+        }
+
+        function HideApplicationFirmwareUpdatePage(){
+          applicationUpdatePageElements.forEach(element=>{
+            element.classList.add("d-none");
+          });
+        }
+
+        upgradeApplicationButtonElement.addEventListener("click",async function(event){
+          console.log("upgradeApplicationButtonElement is clicked! start");
+
+          ShowApplicationFirmwareUpdatePage();
+          console.log("upgradeApplicationButtonElement is clicked! end");
+        });
 
         connectButtonElement.addEventListener("click",async function(event){
           if(connectButtonElement.innerHTML.includes("Disconnect")){
@@ -689,6 +809,8 @@
                 await device.claimInterface(0);
 
                 pibManager = new PIBManager(device);
+                applicationUpdater = new ApplicationUpdater(device);
+
                 ConnectProcessUI();
             }
           }
@@ -697,13 +819,10 @@
 
 
 
-      let percentage = 0;
-        readPibButtonElement.addEventListener("click",async function(event){
-        pageGeneralInfoElement.classList.remove("d-none");
-        rawGeneralPIBDataElement.classList.remove("d-none");
-        MainMenuButtonsElement.classList.remove("d-none");
-        carouselExampleIndicatorsElement.classList.remove("d-none");
+      readPibButtonElement.addEventListener("click",async function(event){
+        ShowReadPIBPage();
 
+        HideApplicationFirmwareUpdatePage();
         await pibManager.readPibData();
 
         document.querySelector("#pibVersion").innerHTML  = pibManager.getPibVersionString();
