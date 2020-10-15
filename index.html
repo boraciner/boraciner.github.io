@@ -476,7 +476,7 @@
                             r + (v > 31 && v < 127 || v > 159 ? String.fromCharCode(v) : '.'), '  ') + '\n' : ''), ''));
 
       
-                            class PIBManager{
+    class PIBManager{
         
         constructor(deviceVar){
           this.device = deviceVar;
@@ -594,6 +594,14 @@
         }
       };
 
+        navigator.usb.addEventListener('connect', event => {
+            console.log("navigator.usb.addEventListener(connect");
+        });
+
+        navigator.usb.addEventListener('disconnect', event => {
+            console.log("navigator.usb.addEventListener(disconnect");
+            DisconnectProcessUI();
+        });
 
 
         let pageGeneralInfoElement = document.querySelector(".pageGeneralInfo");
@@ -612,17 +620,16 @@
         let productNameElement = document.querySelector(".productName");
         let manufacturerNameElement = document.querySelector(".manufacturerName");
 
-        let connected = false;
+        
         var intervalVar;
         var device;
 
         let pibManager = {};
-        connectButtonElement.addEventListener("click",async function(event){
-          
-          if(connected){
-            this.innerHTML  = "<i class=\"fab fa-usb\"></i> Connect"; 
-            this.classList.add("btn-success")
-            this.classList.remove("btn-danger")
+
+        function DisconnectProcessUI(){
+            connectButtonElement.innerHTML  = "<i class=\"fab fa-usb\"></i> Connect"; 
+            connectButtonElement.classList.add("btn-success")
+            connectButtonElement.classList.remove("btn-danger")
             
             deviceInfoListElement.classList.add("d-none")
             readPibButton.classList.add("d-none", "btn-secondary")
@@ -636,37 +643,9 @@
             rawGeneralPIBDataElement.classList.add("d-none");
             MainMenuButtonsElement.classList.add("d-none");
             carouselExampleIndicatorsElement.classList.add("d-none");
-          
-
-          }  
-          else{
             
-            
-            try {
-              device = await navigator.usb.requestDevice({ filters: [{
-                  vendorId: 2492
-              }]});
-            } catch (err) {
-              // No device was selected.
-            }
-
-            if (device !== undefined) {
-              console.log(device.productName);
-            }
-
-            await device.open();
-            if (device.configuration === null)
-            {
-              console.log("device.configuration === null");
-              await device.selectConfiguration(0);
-            }else{
-              console.log("device.configuration != null");
-            }
-            await device.claimInterface(0);
-
-            pibManager = new PIBManager(device);
-          
-            
+        }
+        function ConnectProcessUI(){
             deviceInfoListElement.classList.remove("d-none")
             productNameElement.innerHTML  = device.productName; 
             manufacturerNameElement.innerHTML  = device.manufacturerName;
@@ -682,10 +661,37 @@
             readPibButtonElement.classList.remove("d-none")
             writePibButtonElement.classList.remove("d-none")
             upgradeFirmwareButtonElement.classList.remove("d-none")
-          
-          }
+            
+        }
 
-          connected = !connected;  
+        connectButtonElement.addEventListener("click",async function(event){
+          if(connectButtonElement.innerHTML.includes("Disconnect")){
+            DisconnectProcessUI();
+          }  
+          else{
+            try {
+              device = await navigator.usb.requestDevice({ filters: [{
+                  vendorId: 2492
+              }]});
+            } catch (err) {
+                device = undefined;
+            }
+           
+            if (device !== undefined) {
+                await device.open();
+                if (device.configuration === null)
+                {
+                    console.log("device.configuration === null");
+                    await device.selectConfiguration(0);
+                }else{
+                    console.log("device.configuration != null");
+                }
+                await device.claimInterface(0);
+
+                pibManager = new PIBManager(device);
+                ConnectProcessUI();
+            }
+          }
         });
 
         let percentage = 0;
