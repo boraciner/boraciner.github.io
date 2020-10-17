@@ -201,8 +201,6 @@
       <div class="col-xl-8 col-lg-8 col-md-4 col-sm-6">
         <div class="btn-group" role="group" aria-label="Basic example">
           <button type="button" class="btn btn-outline-primary">Local Device Config</button>
-          <button type="button" class="btn btn-outline-secondary">Qos Parameters</button>
-          <button type="button" class="btn btn-outline-warning">V3.0 Config</button>
           <button type="button" class="btn btn-outline-danger">PEV / EVSE Configuration</button>
         </div>
       </div>
@@ -231,6 +229,13 @@
         </div>
       </div>   
     </div>
+    <div class="row justify-content-center">
+      <div class="col-lg-4 col-md-4 col-sm-8 text-capitalize badge badge-primary text-wrap d-none " id="transferredOfString" style="width: 6rem;">
+        Transferred <span id="sentBytes"></span> of <span id="totalBytes"></span>
+      </div>
+      <div class="col-lg-1 col-md-1 col-sm-1">
+      </div>  
+    </div>
   </div>
 
   
@@ -247,7 +252,7 @@
                     <div class="input-group-prepend ">
                       <span class="input-group-text " id="mac-inputGroup-sizing-sm">MAC</span>
                     </div>
-                    <input type="text" class="form-control" aria-label="" value="00:01:87:08:25:17" aria-describedby="inputGroup-sizing-sm">
+                    <input type="text" class="form-control pibpage1 pibpage1mac" aria-label="" value="" aria-describedby="inputGroup-sizing-sm">
                 </div>
               </div>
                 <div class="col-lg-4 col-sm-10">
@@ -255,7 +260,7 @@
                     <div class="input-group-prepend">
                       <span class="input-group-text" id="mfg-inputGroup-sizing-sm">MFG</span>
                     </div>
-                    <input type="text" class="form-control" aria-label="" value="Pontis EMC GmbH" aria-describedby="inputGroup-sizing-sm">
+                    <input type="text" class="form-control  pibpage1 pibpage1mfg" aria-label="" value="" aria-describedby="inputGroup-sizing-sm">
                   </div>
                 </div>
               </div>
@@ -264,10 +269,10 @@
               <!--DAK NMK Start-->
               <div class="row justify-content-center text-center">
                 <div class="col-lg-4 col-sm-10">
-                  <p class="text-primary ">DAK : <span id="dak" class="text-secondary ">B9:AE:06:5B:B2:A6:B0:25:AC:BE:94:34:EC:B8:86:F9</span></p>
+                  <p class="text-primary ">DAK : <span id="dak" class="text-secondary  pibpage1 pibpage1dak"></span></p>
                 </div>
                 <div class="col-lg-4 col-sm-10">
-                  <p class="text-primary">NMK : <span id="nmk" class="text-secondary ">B9:AE:06:5B:B2:A6:B0:25:AC:BE:94:34:EC:B8:86:F9</span></p>
+                  <p class="text-primary">NMK : <span id="nmk" class="text-secondary pibpage1 pibpage1nmk"></span></p>
                 </div>
               </div>
               <!--DAK NMK Start-->
@@ -280,7 +285,7 @@
                     <div class="input-group-prepend">
                       <span class="input-group-text" id="usr-inputGroup-sizing-sm">USR</span>
                     </div>
-                    <input type="text" class="form-control" aria-label="" value="PEV EMU SIDE" aria-describedby="inputGroup-sizing-sm">
+                    <input type="text" class="form-control pibpage1 pibpage1usr" aria-label="" value="PEV EMU SIDE" aria-describedby="inputGroup-sizing-sm">
                   </div>
                 </div>
                 <div class="col-lg-4 col-sm-10"></div>
@@ -290,10 +295,10 @@
               <!--CCO Selection Coexist Mode Selection Start-->
               <div class="row justify-content-center text-center">
                 <div class="col-lg-4 col-sm-10">
-                  <p class="text-primary">CCo Selection : <span id="ccoselection" class="text-secondary ">Always</span></p>
+                  <p class="text-primary ">CCo Selection : <span id="ccoselection" class="text-secondary pibpage1 pibpage1ccoselection"></span></p>
                 </div>
                 <div class="col-lg-4 col-sm-10">
-                  <p class="text-primary">Coexist Mode Selection : <span id="coexistmodeselection" class="text-secondary ">00</span></p>
+                  <p class="text-primary ">Coexist Mode Selection : <span id="coexistmodeselection" class="text-secondary pibpage1 pibpage1coexistmodeselection"></span></p>
                 </div>
               </div>
               <!--CCO Selection Coexist Mode Selection End--> 
@@ -301,36 +306,15 @@
               <!--PL Freq Selection Preffered NID Start-->
               <div class="row justify-content-center text-center">
                 <div class="col-lg-4 col-sm-10">
-                  <p class="text-primary">PL Freq Selection : <span id="plfreqselection" class="text-secondary ">00</span></p>
+                  <p class="text-primary ">PL Freq Selection : <span id="plfreqselection" class="text-secondary pibpage1 pibpage1plfreqselection"></span></p>
                 </div>
                 <div class="col-lg-4 col-sm-10">
-                  <p class="text-primary">Preffered NID Start : <span id="prefferednidstart" class="text-secondary ">AB:04:31:E7:A2:46:05</span></p>
+                  <p class="text-primary ">Preffered NID Start : <span id="prefferednidstart" class="text-secondary pibpage1 pibpage1prefferedNIDStart"></span></p>
                 </div>
               </div>
               <!--PL Freq Selection Preffered NID End--> 
           
-          
-              <!--Auto FW Upgradable MDU Configuration Start-->
-              <div class="row justify-content-center text-center">
-                <div class="col-lg-4 col-sm-10">
-                  <p class="text-primary">Auto FW Upgradable(AVLN) : <span id="autofwupgradableAVLN" class="text-secondary">01</span></p>
-                </div>
-                <div class="col-lg-4 col-sm-10">
-                  <p class="text-primary">MDU Configuration : <span id="mduconfiguration" class="text-secondary ">00</span></p>
-                </div>
-              </div>
-              <!--Auto FW Upgradable MDU Configuration End--> 
-          
-              <!--MDU Role Communications Media Start-->
-              <div class="row justify-content-center text-center ">
-                <div class="col-lg-4 col-sm-10">
-                  <p class="text-primary">MDU Role : <span id="mdurole" class="text-secondary">01</span></p>
-                </div>
-                <div class="col-lg-4 col-sm-10">
-                  <p class="text-primary">Communications Media : <span id="communicationsmedia" class="text-secondary ">00</span></p>
-                </div>
-              </div>
-              <!--MDU Role Communications Media End--> 
+              
           
           
               <!--AFE Gain AFE Default Start-->
@@ -340,7 +324,7 @@
                 <div class="col-lg-4 col-sm-10">
                   <form>
                     <div class="form-group text-primary">
-                      <label for="formControlRange2">AFE Gain : <span id="afegainnumber">33</span></label>
+                      <label for="formControlRange2">AFE Gain : <span id="pibpage1afegain"></span></label>
                       <input type="range" class="form-control-range " id="formControlRange2">
                     </div>
                   </form>
@@ -356,114 +340,31 @@
         <!--MAC MFG Start------------------------------------------------------------------------------------->
         <div class="container-fluid  mt-4  fade-in pageGeneralInfo ">
           <div class="row justify-content-center text-center">
-          <div class="col-lg-4 col-sm-10">
-            <div class="input-group input-group-sm mb-3">
-                <div class="input-group-prepend ">
-                  <span class="input-group-text " id="mac-inputGroup-sizing-sm">MAC</span>
+          <div class="col-8">
+            <div class="input-group mb-3">
+              <div class="input-group-prepend">
+                <div class="input-group-text">
+                  <input type="checkbox" aria-label="Checkbox for following text input">
                 </div>
-                <input type="text" class="form-control" aria-label="" value="00:01:87:08:25:17" aria-describedby="inputGroup-sizing-sm">
+              </div>
+              <input type="text" class="form-control" aria-label="Text input with checkbox">
             </div>
+            
           </div>
-            <div class="col-lg-4 col-sm-10">
-              <div class="input-group input-group-sm mb-3">
+            <div class="col-8">
+              <div class="input-group mb-5">
                 <div class="input-group-prepend">
-                  <span class="input-group-text" id="mfg-inputGroup-sizing-sm">MFG</span>
+                  <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">PEV / EVSE</button>
+                  <div class="dropdown-menu">
+                    <a class="dropdown-item" href="#">PEV</a>
+                    <a class="dropdown-item" href="#">EVSE</a>
+                  </div>
                 </div>
-                <input type="text" class="form-control" aria-label="" value="Pontis EMC GmbH" aria-describedby="inputGroup-sizing-sm">
+                <input type="text" class="form-control" aria-label="Text input with dropdown button">
               </div>
             </div>
           </div>
-          <!--MAC MFG END--> 
-          
-          <!--DAK NMK Start-->
-          <div class="row justify-content-center text-center">
-            <div class="col-lg-4 col-sm-10">
-              <p class="text-primary ">DAK : <span id="dak" class="text-secondary ">B9:AE:06:5B:B2:A6:B0:25:AC:BE:94:34:EC:B8:86:F9</span></p>
-            </div>
-            <div class="col-lg-4 col-sm-10">
-              <p class="text-primary">NMK : <span id="nmk" class="text-secondary ">B9:AE:06:5B:B2:A6:B0:25:AC:BE:94:34:EC:B8:86:F9</span></p>
-            </div>
-          </div>
-          <!--DAK NMK Start-->
-          
-      
-          <!--USR NET Start-->
-          <div class="row justify-content-center text-center ">
-            <div class="col-lg-4 col-sm-10">
-              <div class="input-group input-group-sm mb-3">
-                <div class="input-group-prepend">
-                  <span class="input-group-text" id="usr-inputGroup-sizing-sm">USR</span>
-                </div>
-                <input type="text" class="form-control" aria-label="" value="PEV EMU SIDE" aria-describedby="inputGroup-sizing-sm">
-              </div>
-            </div>
-            <div class="col-lg-4 col-sm-10"></div>
-          </div>
-          <!--USR NET END--> 
-      
-          <!--CCO Selection Coexist Mode Selection Start-->
-          <div class="row justify-content-center text-center">
-            <div class="col-lg-4 col-sm-10">
-              <p class="text-primary">CCo Selection : <span id="ccoselection" class="text-secondary ">Always</span></p>
-            </div>
-            <div class="col-lg-4 col-sm-10">
-              <p class="text-primary">Coexist Mode Selection : <span id="coexistmodeselection" class="text-secondary ">00</span></p>
-            </div>
-          </div>
-          <!--CCO Selection Coexist Mode Selection End--> 
-      
-          <!--PL Freq Selection Preffered NID Start-->
-          <div class="row justify-content-center text-center">
-            <div class="col-lg-4 col-sm-10">
-              <p class="text-primary">PL Freq Selection : <span id="plfreqselection" class="text-secondary ">00</span></p>
-            </div>
-            <div class="col-lg-4 col-sm-10">
-              <p class="text-primary">Preffered NID Start : <span id="prefferednidstart" class="text-secondary ">AB:04:31:E7:A2:46:05</span></p>
-            </div>
-          </div>
-          <!--PL Freq Selection Preffered NID End--> 
-      
-      
-          <!--Auto FW Upgradable MDU Configuration Start-->
-          <div class="row justify-content-center text-center">
-            <div class="col-lg-4 col-sm-10">
-              <p class="text-primary">Auto FW Upgradable(AVLN) : <span id="autofwupgradableAVLN" class="text-secondary">01</span></p>
-            </div>
-            <div class="col-lg-4 col-sm-10">
-              <p class="text-primary">MDU Configuration : <span id="mduconfiguration" class="text-secondary ">00</span></p>
-            </div>
-          </div>
-          <!--Auto FW Upgradable MDU Configuration End--> 
-      
-          <!--MDU Role Communications Media Start-->
-          <div class="row justify-content-center text-center ">
-            <div class="col-lg-4 col-sm-10">
-              <p class="text-primary">MDU Role : <span id="mdurole" class="text-secondary">01</span></p>
-            </div>
-            <div class="col-lg-4 col-sm-10">
-              <p class="text-primary">Communications Media : <span id="communicationsmedia" class="text-secondary ">00</span></p>
-            </div>
-          </div>
-          <!--MDU Role Communications Media End--> 
-      
-      
-          <!--AFE Gain AFE Default Start-->
-      
-
-          <div class="row justify-content-center text-center mb-5">
-            <div class="col-lg-4 col-sm-10">
-              <form>
-                <div class="form-group text-primary">
-                  <label for="formControlRange">AFE Gain : <span id="afegainnumber">33</span></label>
-                  <input type="range" class="form-control-range " id="formControlRange">
-                </div>
-              </form>
-            </div>
-            <div class="col-lg-4 col-sm-10 mt-3">
-              <button type="button" class="btn btn-dark">AFE Default</button>
-            </div>
-          </div>
-          <!--AFE Gain AFE Default End--------------------------------------------------------------------> 
+         
         </div>
       </div>
      
@@ -512,41 +413,197 @@
 
         }
 
-        Update(myByteArray){
-
-          console.log("Application Updater | Update")
 
 
-          let blockCounter = 0;
-          let responseLength = 0;
-          
-          let result = this.device.controlTransferOut({
+        Update(myByteArray,blockCounter = 0,askForStatus = false){
+
+          console.log("Application Updater | Update | blockCounter",blockCounter,"askForStatus", askForStatus)
+
+          if(askForStatus){
+
+            let result2 = this.device.controlTransferIn({
+              requestType: 'class',
+              recipient: 'interface',
+              request: 3,
+              value: 0,
+              index: 0}, 6);
+            result2.then(res2=>{
+              console.log("RESULT Status of Device ",res2)
+              let arrayBuffer = res2.data.buffer;
+              let receivedData = new Uint8Array(arrayBuffer);
+              console.log(">>> Status ")
+              console.hex(receivedData);
+              if (receivedData[4] === 0x04 || receivedData[4] === 0x05) {
+                console.log(">>> Status stage 1")
+                if (receivedData[4] === 0x04)
+                {
+                  console.log(">>> Status stage 2")
+                  let timeout = ((receivedData[2] & 0xff) << 8) | (receivedData[1] & 0xff);
+                  setTimeout(() => {
+                    console.error("wait for ",timeout," milliseconds")
+                    this.Update(myByteArray,blockCounter,true)
+                  }, timeout);
+                }else{
+                  console.log(">>> Status stage 3")
+                  console.error("do it now...")
+                  this.Update(myByteArray,blockCounter,false)
+                }
+                
+              }else{
+                console.error("SIKINTI VAR");
+              }
+            }) 
+
+
+          }else{
+            let myCurrentByteIndex = blockCounter*512;
+            let availableNextBytes = 0
+            if(myCurrentByteIndex > myByteArray.length)
+              return;
+            else if(myByteArray.length >= myCurrentByteIndex+512)
+              availableNextBytes = myCurrentByteIndex+512
+            else
+              availableNextBytes = myByteArray.length - myCurrentByteIndex; 
+
+            console.log("myCurrentByteIndex",myCurrentByteIndex,"availableNextBytes",availableNextBytes,"length",(availableNextBytes-myCurrentByteIndex),"total length",myByteArray.length)
+            document.getElementById("sentBytes").innerText = myCurrentByteIndex
+            document.getElementById("totalBytes").innerText = myByteArray.length
+            
+            if(availableNextBytes > 0)
+            {
+              let result = this.device.controlTransferOut({
               requestType: 'class',
               recipient: 'interface',
               request: 1,
               value: blockCounter,
-              index: 0}, myByteArray.slice(blockCounter,blockCounter+512));
-          console.log("RESULT",result)
+              index: 0}, myByteArray.slice(myCurrentByteIndex,availableNextBytes));
+            
+            
+              result.then(res=>{
+                blockCounter += 1
+              
+                console.log("RESULT writing BULK ",res)
+                if(true){
+                  let result2 = this.device.controlTransferIn({
+                    requestType: 'class',
+                    recipient: 'interface',
+                    request: 3,
+                    value: 0,
+                    index: 0}, 6);
+                  result2.then(res2=>{
+                    console.log("RESULT Status of Device ",res2)
+                    let arrayBuffer = res2.data.buffer;
+                    let receivedData = new Uint8Array(arrayBuffer);
+                    console.log(">>> Status ")
+                    console.hex(receivedData);
+                    if (receivedData[4] === 0x04 || receivedData[4] === 0x05) {
+                      console.log(">>> Status stage 1")
+                      if (receivedData[4] === 0x04)
+                      {
+                        console.log(">>> Status stage 2")
+                        let timeout = ((receivedData[2] & 0xff) << 8) | (receivedData[1] & 0xff);
+                        setTimeout(() => {
+                          console.log("wait for ",timeout," milliseconds")
+                          this.Update(myByteArray,blockCounter,true)
+                        }, timeout);
+                      }else{
+                        console.log(">>> Status stage 3")
+                        console.log("do it now...")
+                        this.Update(myByteArray,blockCounter,false)
+                      }
+                      
+                    }else{
+                      console.error("Something is wrong");
+                    }
+                  }) 
+                }
+              })
 
-
-
-
-
-
-
-
+            }else{
+              // Final Stage After finishing Application Firmware
+              console.log("Finishing Application Firmware Upload - 1")
+              let result = this.device.controlTransferOut({
+              requestType: 'class',
+              recipient: 'interface',
+              request: 1,
+              value: blockCounter,
+              index: 0}, new Uint8Array());
+              result.then(res=>{
+                console.log("Finishing Application Firmware Upload - 2")
+                let result2 = this.device.controlTransferIn({
+                    requestType: 'class',
+                    recipient: 'interface',
+                    request: 3,
+                    value: 0,
+                    index: 0}, 6);
+                  result2.then(res2=>{
+                    console.log("Finishing Application Firmware Upload - 3")
+                    let result3 = this.device.controlTransferIn({
+                      requestType: 'class',
+                      recipient: 'interface',
+                      request: 3,
+                      value: 0,
+                      index: 0}, 6);
+                    });
+              });
+              document.querySelector("#fileIsLoading").classList.add("d-none")
+              document.querySelector("#transferredOfString").classList.add("d-none")
+              
+            }
+          }
         }
       };
       
-    class PIBManager{
-        
+      const NVM_IMAGE_GENERIC             =  0x0000;
+      const NVM_IMAGE_CONFIG_SYNOPSIS     =  0x0001;
+      const NVM_IMAGE_CONFIG_DENALI       =  0x0002;
+      const NVM_IMAGE_APPLET_DENALI       =  0x0003;
+      const NVM_IMAGE_FIRMWARE            =  0x0004;
+      const NVM_IMAGE_OASCLIENT           =  0x0005;
+      const NVM_IMAGE_CUSTOM              =  0x0006;
+      const NVM_IMAGE_MEMCTL              =  0x0007;
+      const NVM_IMAGE_ADVPWRMGMT          =  0x0008;
+      const NVM_IMAGE_OAS_CLIENT_IP_STK   =  0x0009;
+      const NVM_IMAGE_OAS_CLIENT_TR069    =  0x000A;
+      const NVM_IMAGE_NVM_SOFTLOADER      =  0x000B;
+      const NVM_IMAGE_FLASH_LAYOUT        =  0x000C;
+      const NVM_IMAGE_MANIFEST            =  0x000E;
+      const NVM_IMAGE_PIB                 =  0x000F;
+      class PIBManager{
+         
         constructor(deviceVar){
           this.device = deviceVar;
           this.pibContent = new Uint8Array();
           this.pibVersionString = ""
-        
+          this.MAC_Uint8Arr = new Uint8Array();
+          this.DAK_Uint8Arr = new Uint8Array();
+          this.MFG_Str = ""
+          this.NMK_Uint8Arr = new Uint8Array();
+          this.USR_Str = ""
+          this.NET_Str = ""
+          this.CCoSelection = 0;
+          this.CoexistModeSelection = new Uint8Array();
+          this.PLFreqSelection = new Uint8Array();
+          this.PreferredNID_Uint8Arr = new Uint8Array();
+          this.AutoFWUpgradeable = new Uint8Array();
+          this.MDUConfiguration = new Uint8Array();
+          this.MDURole = new Uint8Array();
+          this.CommunicationsMedia = new Uint8Array();
+          this.AFEGain = new Uint8Array();
+          this.AFEGainNumber = 0
         }
 
+        PrepareSpecialHexString(hexArray){
+          let strtmp = "";
+          hexArray.forEach(element=>{
+          if(element < 10)
+            strtmp += "0" + element.toString(16) + ":"
+          else
+            strtmp += element.toString(16) + ":"
+          });
+          strtmp = strtmp.slice(0,strtmp.length-1)  
+          return strtmp.toUpperCase();
+        }
         
         convert_u32(Uint8Arr) {
             Uint8Arr = Uint8Arr.reverse();
@@ -620,35 +677,76 @@
             blockCounter++;
           }while(responseLength == 512);
 
-          console.hex(this.pibContent);
-          //console.log(this.pibContent);
-
           this.parsePIBBlocks(this.pibContent);
+
         }
+        ParseImagePib(pibBlockByteArr){
+          console.log("Parse Image PIB")
+          
+          let header = pibBlockByteArr.slice(0 ,96)
+          let data = pibBlockByteArr.slice(96 ,pibBlockByteArr.length)
+          console.hex(header)
+          console.hex(data)
+
+          this.MAC_Uint8Arr = data.slice(12 ,18)
+          this.DAK_Uint8Arr = data.slice(18 , 34)
+          this.MFG_Str = (new TextDecoder("utf-8").decode(data.slice(36,100))).replace(/[^a-z0-9]/gmi, " ").replace(/\s+/g, " ").trim();
+          this.NMK_Uint8Arr = data.slice(100 , 116)
+          this.USR_Str = (new TextDecoder("utf-8").decode(data.slice(116,180))).replace(/[^a-z0-9]/gmi, " ").replace(/\s+/g, " ").trim();
+          this.NET_Str = (new TextDecoder("utf-8").decode(data.slice(180,244))).replace(/[^a-z0-9]/gmi, " ").replace(/\s+/g, " ").trim();
+          this.CCoSelection = (data.slice(244 , 245)[0])
+          this.CoexistModeSelection = data.slice(245 , 246)
+          this.PLFreqSelection = data.slice(246 , 247)
+          this.PreferredNID_Uint8Arr = data.slice(248 , 255)
+          this.AutoFWUpgradeable = data.slice(256 , 257)
+          this.MDUConfiguration = data.slice(257 , 258)
+          this.MDURole = data.slice(258 , 259)
+          this.CommunicationsMedia = data.slice(266 , 267)
+          this.AFEGain = data.slice(5233 , 5237)
+          this.AFEGainNumber = this.convert_32(this.AFEGain)
+        }
+        ParseImageManifest(manifestBlockByteArr){
+          console.log("Parse Image Manifest")
+          //console.hex(manifestBlockByteArr)
+
+          let header = manifestBlockByteArr.slice(0 ,96)
+          let data = manifestBlockByteArr.slice(96 ,manifestBlockByteArr.length)
+          console.hex(header)
+          console.hex(data)
+          
+
+          this.pibVersionString = new TextDecoder("utf-8").decode(manifestBlockByteArr.slice(512,534));
+          console.log("pibVersionString ",this.pibVersionString)
 
 
+        }
         parsePIBBlocks(myByteArray){
-            this.pibVersionString = new TextDecoder("utf-8").decode(myByteArray.slice(512,534));
             
             
-            let nextHeaderAddress = 0
+            let HeaderAddress = 0
             do{
                 //Next Header Address
-                let nextHeaderAddressArr = myByteArray.slice(nextHeaderAddress + 28 ,nextHeaderAddress + 32);
+                let HeaderAddressArr = myByteArray.slice(HeaderAddress + 28 ,HeaderAddress + 32);
                 //Block Size
-                let nextImageLength = this.convert_u32(myByteArray.slice(nextHeaderAddress + 16 ,nextHeaderAddress + 20))
+                let ImageLength = this.convert_u32(myByteArray.slice(HeaderAddress + 16 ,HeaderAddress + 20))
                 //Image Type
-                let imageType = this.convert_u32(myByteArray.slice(nextHeaderAddress + 36 ,nextHeaderAddress + 40))
-                console.log("nextHeaderAddress:" ,nextHeaderAddress," Header Size : 96 ","nextImageLength",nextImageLength, " Block Size :",(nextImageLength+96));
+                let imageType = this.convert_u32(myByteArray.slice(HeaderAddress + 36 ,HeaderAddress + 40))
+                console.log("HeaderAddress:" ,HeaderAddress," Header Size : 96 ","ImageLength",ImageLength, " Block Size :",(ImageLength+96));
                 console.warn("imageType:" ,imageType);
                 
-
+                switch(imageType){
+                  case NVM_IMAGE_PIB:
+                    this.ParseImagePib(myByteArray.slice(HeaderAddress,ImageLength+96));
+                    break;
+                  case NVM_IMAGE_MANIFEST:
+                    this.ParseImageManifest(myByteArray.slice(HeaderAddress,ImageLength+96));
+                    break;
+                }
                 
-                nextHeaderAddress = this.convert_32(nextHeaderAddressArr)
-            }while(nextHeaderAddress > 0)
+                HeaderAddress = this.convert_32(HeaderAddressArr)
+            }while(HeaderAddress > 0)
             
             console.log("Total PIB File Length:" + myByteArray.length);
-            console.log("pibVersionString:" + this.pibVersionString);
         }
 
         getPibVersionString(){
@@ -689,26 +787,24 @@
         let pibManager = {};
         let applicationUpdater = {};
 
-        var file = "";
+        let file = "";
 
         document.getElementById('inputGroupFileAddon04').onclick = function(){
           if(file!==""){ 
-            var reader = new FileReader();
+            let reader = new FileReader();
             reader.onload = function(progressEvent){
               console.log("Pressed 3")
-              var arrayBuffer = reader.result
-              var bytes = new Uint8Array(arrayBuffer);
+              let arrayBuffer = reader.result
+              let bytes = new Uint8Array(arrayBuffer);
               
               
               console.log("Pressed 4")
-              setTimeout(() => {
-                document.querySelector("#fileIsLoading").classList.add("d-none")
-              }, 1000); 
+              document.querySelector("#fileIsLoading").classList.remove("d-none")
+              document.querySelector("#transferredOfString").classList.remove("d-none")
               applicationUpdater.Update(bytes)
-              
+              console.log("Pressed ==========================================")
             };
             console.log("Pressed 1")
-            document.querySelector("#fileIsLoading").classList.remove("d-none")
             reader.readAsArrayBuffer(file);
             console.log("Pressed 2")
           }
@@ -751,6 +847,40 @@
             upgradeFirmwareButtonElement.classList.remove("d-none")
             upgradeApplicationButtonElement.classList.remove("d-none")
             
+        }
+
+        function FillPIBPage(pibManager){
+          document.querySelector("#pibVersion").innerHTML  = pibManager.getPibVersionString();
+          document.querySelector(".pibpage1mac").value = pibManager.PrepareSpecialHexString(pibManager.MAC_Uint8Arr)
+          document.querySelector(".pibpage1dak").innerText = pibManager.PrepareSpecialHexString(pibManager.DAK_Uint8Arr)
+          document.querySelector(".pibpage1nmk").innerText = pibManager.PrepareSpecialHexString(pibManager.NMK_Uint8Arr)
+          document.querySelector(".pibpage1mfg").value = pibManager.MFG_Str.trim()
+          document.querySelector(".pibpage1usr").value = pibManager.USR_Str.trim()
+          let ccoSelectionCase = pibManager.CCoSelection;
+          let tmpStr = ""
+          switch(ccoSelectionCase){
+            case 0:
+              tmpStr = "Auto"
+              break;
+            case 1:
+              tmpStr = "Never"
+              break;
+            case 2:
+              tmpStr = "Always"
+              break;
+            case 3:
+              tmpStr = "User Assigned"
+              break;
+          }
+          document.querySelector(".pibpage1ccoselection").innerHTML = tmpStr
+          document.querySelector(".pibpage1coexistmodeselection").innerHTML = pibManager.CoexistModeSelection
+          document.querySelector(".pibpage1plfreqselection").innerHTML = pibManager.PLFreqSelection
+          document.querySelector(".pibpage1prefferedNIDStart").innerText = pibManager.PrepareSpecialHexString(pibManager.PreferredNID_Uint8Arr)
+          document.querySelector("#pibpage1afegain").innerHTML = pibManager.AFEGainNumber
+          
+
+          
+
         }
 
         function ShowReadPIBPage(){
@@ -826,13 +956,11 @@
 
       readPibButtonElement.addEventListener("click",async function(event){
         ShowReadPIBPage();
-
         HideApplicationFirmwareUpdatePage();
         await pibManager.readPibData();
-
-        document.querySelector("#pibVersion").innerHTML  = pibManager.getPibVersionString();
-          
+        FillPIBPage(pibManager);
       });
+
 
     </script>
 
