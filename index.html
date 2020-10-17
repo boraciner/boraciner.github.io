@@ -191,7 +191,7 @@
       </div>
       <div class="col-xl-3 col-lg-3 col-md-4 col-sm-6">
         <div class="alert alert-success pevEvseInfo" role="alert">
-          Side : <span id="pevEvseSide" class="text-secondary ">EVSE</span>
+          Side : <span id="pevEvseSide" class="text-secondary "></span>
         </div>
       </div>
     </div>
@@ -324,8 +324,8 @@
                 <div class="col-lg-4 col-sm-10">
                   <form>
                     <div class="form-group text-primary">
-                      <label for="formControlRange2">AFE Gain : <span id="pibpage1afegain"></span></label>
-                      <input type="range" class="form-control-range " id="formControlRange2">
+                      <label for="formControlRange2">AFE Gain : <span id="pibpage1afegain" class="text-secondary"></span></label>
+                      <input type="range" class="custom-range" min="-100" max="20" id="formControlRange2" value="0">
                     </div>
                   </form>
                 </div>
@@ -704,6 +704,10 @@
           this.CommunicationsMedia = data.slice(266 , 267)
           this.AFEGain = data.slice(5233 , 5237)
           this.AFEGainNumber = this.convert_32(this.AFEGain)
+          this.SlacEnable = (data.slice(5715 , 5716)[0])
+          
+
+
         }
         ParseImageManifest(manifestBlockByteArr){
           console.log("Parse Image Manifest")
@@ -877,8 +881,21 @@
           document.querySelector(".pibpage1plfreqselection").innerHTML = pibManager.PLFreqSelection
           document.querySelector(".pibpage1prefferedNIDStart").innerText = pibManager.PrepareSpecialHexString(pibManager.PreferredNID_Uint8Arr)
           document.querySelector("#pibpage1afegain").innerHTML = pibManager.AFEGainNumber
-          
+          document.querySelector("#formControlRange2").value = pibManager.AFEGainNumber
+          switch(pibManager.SlacEnable){
+            case 1:
+              document.querySelector("#pevEvseSide").innerHTML = "PEV";
+              break;
+            case 2:
+              document.querySelector("#pevEvseSide").innerHTML = "EVSE";
+              break;
+            default:
+              document.querySelector("#pevEvseSide").innerHTML = "Error";
+              break;
+          }
 
+         
+          
           
 
         }
