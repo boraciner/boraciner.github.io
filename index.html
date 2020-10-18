@@ -191,7 +191,7 @@
       </div>
       <div class="col-xl-3 col-lg-3 col-md-4 col-sm-6">
         <div class="alert alert-success pevEvseInfo" role="alert">
-          Side : <span id="pevEvseSide" class="text-secondary "></span>
+          Side : <span id="pevEvseSideText" class="text-secondary "></span>
         </div>
       </div>
     </div>
@@ -344,23 +344,23 @@
             <div class="input-group mb-3">
               <div class="input-group-prepend">
                 <div class="input-group-text">
-                  <input type="checkbox" aria-label="Checkbox for following text input">
+                  <input type="checkbox" aria-label="Checkbox for following text input" id="FastAVLNAssociate" >
                 </div>
               </div>
-              <input type="text" class="form-control" aria-label="Text input with checkbox">
+              <input type="text" class="form-control" aria-label="Text input with checkbox" value="Fast AVLN Associate">
             </div>
             
           </div>
             <div class="col-8">
               <div class="input-group mb-5">
                 <div class="input-group-prepend">
-                  <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">PEV / EVSE</button>
-                  <div class="dropdown-menu">
-                    <a class="dropdown-item" href="#">PEV</a>
-                    <a class="dropdown-item" href="#">EVSE</a>
+                  <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="comboboxPevEvse">PEV / EVSE</button>
+                  <div class="dropdown-menu" >
+                    <a class="dropdown-item">PEV</a>
+                    <a class="dropdown-item">EVSE</a>
                   </div>
                 </div>
-                <input type="text" class="form-control" aria-label="Text input with dropdown button">
+                <input type="text" class="form-control " aria-label="Text input with dropdown button" value="" id="pevEvseSideComboboxText">
               </div>
             </div>
           </div>
@@ -705,7 +705,7 @@
           this.AFEGain = data.slice(5233 , 5237)
           this.AFEGainNumber = this.convert_32(this.AFEGain)
           this.SlacEnable = (data.slice(5715 , 5716)[0])
-          
+          this.FastAVLNAssociate = ((data.slice(5843 , 5844)[0]))
 
 
         }
@@ -882,22 +882,25 @@
           document.querySelector(".pibpage1prefferedNIDStart").innerText = pibManager.PrepareSpecialHexString(pibManager.PreferredNID_Uint8Arr)
           document.querySelector("#pibpage1afegain").innerHTML = pibManager.AFEGainNumber
           document.querySelector("#formControlRange2").value = pibManager.AFEGainNumber
+          let pevEvseStr = ""
           switch(pibManager.SlacEnable){
             case 1:
-              document.querySelector("#pevEvseSide").innerHTML = "PEV";
+              pevEvseStr = "PEV";
               break;
             case 2:
-              document.querySelector("#pevEvseSide").innerHTML = "EVSE";
+              pevEvseStr = "EVSE";
               break;
             default:
-              document.querySelector("#pevEvseSide").innerHTML = "Error";
+              pevEvseStr = "Error";
               break;
           }
-
-         
-          
-          
-
+          document.querySelector("#pevEvseSideText").innerHTML = pevEvseStr;
+          document.querySelector("#pevEvseSideComboboxText").value = pevEvseStr;
+          if(this.FastAVLNAssociate == 1){
+            document.querySelector("#FastAVLNAssociate").checked = true
+          }else{
+            document.querySelector("#FastAVLNAssociate").checked = false
+          }
         }
 
         function ShowReadPIBPage(){
@@ -928,6 +931,8 @@
             element.classList.add("d-none");
           });
         }
+
+    
 
         upgradeApplicationButtonElement.addEventListener("click",async function(event){
           console.log("upgradeApplicationButtonElement is clicked! start");
