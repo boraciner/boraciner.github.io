@@ -417,9 +417,10 @@
 
         Update(myByteArray,blockCounter = 0,askForStatus = false){
 
-          console.log("Application Updater | Update | blockCounter",blockCounter,"askForStatus", askForStatus)
+          console.log(">>>>Application Updater | Update | blockCounter",blockCounter,"askForStatus", askForStatus)
 
           if(askForStatus){
+            console.log("askForStatus true....")
 
             let result2 = this.device.controlTransferIn({
               requestType: 'class',
@@ -456,21 +457,26 @@
 
 
           }else{
+            console.log("askForStatus false....")
             let myCurrentByteIndex = blockCounter*512;
             let availableNextBytes = 0
-            if(myCurrentByteIndex > myByteArray.length)
-              return;
-            else if(myByteArray.length >= myCurrentByteIndex+512)
+            if(myCurrentByteIndex > myByteArray.length){
+              console.warn("askForStatus false.... myByteArray.length",myByteArray.length,"myCurrentByteIndex",myCurrentByteIndex," You must handle this")
+              availableNextBytes = 0;
+            }else if(myByteArray.length >= myCurrentByteIndex+512)
               availableNextBytes = myCurrentByteIndex+512
             else
-              availableNextBytes = myByteArray.length - myCurrentByteIndex; 
+              availableNextBytes = myByteArray.length; 
 
-            console.log("myCurrentByteIndex",myCurrentByteIndex,"availableNextBytes",availableNextBytes,"length",(availableNextBytes-myCurrentByteIndex),"total length",myByteArray.length)
+            console.log("myCurrentByteIndex",myCurrentByteIndex,"availableNextBytes",availableNextBytes,"total length",myByteArray.length)
             document.getElementById("sentBytes").innerText = myCurrentByteIndex
             document.getElementById("totalBytes").innerText = myByteArray.length
             
             if(availableNextBytes > 0)
             {
+              console.log("Write IT ===> FROM ",myCurrentByteIndex, "TO",availableNextBytes);
+              console.hex(myByteArray.slice(myCurrentByteIndex,availableNextBytes));
+
               let result = this.device.controlTransferOut({
               requestType: 'class',
               recipient: 'interface',
