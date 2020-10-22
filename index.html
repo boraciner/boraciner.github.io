@@ -219,22 +219,33 @@
             <label class="custom-file-label" for="inputGroupFile04">Choose Application Firmware File</label>
           </div>
           <div class="input-group-append">
-            <button class="btn btn-primary" type="button" id="inputGroupFileAddon04">Upgrade</button>
+            <button class="btn btn-primary" type="button" id="inputGroupFileAddon04">Upgrade From File</button>
           </div>
         </div>      
       </div>
-      <div class="col-lg-1 col-md-1 col-sm-1">
+      <div class="col-lg-2 col-md-1 col-sm-1">
         <div class="spinner-border text-danger d-none" role="status" id="fileIsLoading">
           <span class="sr-only">Loading...</span>
         </div>
       </div>   
     </div>
-    <div class="row justify-content-center">
-      <div class="col-lg-4 col-md-4 col-sm-8 text-capitalize badge badge-primary text-wrap d-none " id="transferredOfString" style="width: 6rem;">
+    <div class="row justify-content-center  mt-3" style="width:100%">
+      <div class="col-lg-4 col-md-4 col-sm-8">   
+        <button class="btn btn-primary" type="button" id="inputGroupFileAddon05" style="width:100%">Upgrade Online</button>
+      </div>
+      <div class="col-lg-2 col-md-1 col-sm-1">
+        
+      </div>
+    </div>
+    
+    
+    <div class="row justify-content-center mt-3">
+      <div class="col-lg-4 col-md-4 col-sm-8 text-capitalize badge badge-primary text-wrap d-none " id="transferredOfString" style="width:100%">
         Transferred <span id="sentBytes"></span> of <span id="totalBytes"></span>
       </div>
-      <div class="col-lg-1 col-md-1 col-sm-1">
-      </div>  
+      <div class="col-lg-2 col-md-1 col-sm-1">
+        
+      </div> 
     </div>
   </div>
 
@@ -796,8 +807,24 @@
 
         let pibManager = {};
         let applicationUpdater = {};
-
+        function httpGet(theUrl)
+        {
+            var xmlHttp = new XMLHttpRequest();
+            xmlHttp.open( "GET", theUrl, false ); // false for synchronous request
+            xmlHttp.send( null );
+            return xmlHttp.responseText;
+        }
         let file = "";
+        document.getElementById('inputGroupFileAddon05').onclick = function(){
+          let response = httpGet("https://myfirmwareimage.free.beeceptor.com/my/api/path")
+          var responseArr = new Uint8Array(response.split(", ").map(x=>parseInt(x,16)))
+          
+          console.log("responseArr : ",responseArr)
+          document.querySelector("#fileIsLoading").classList.remove("d-none")
+          document.querySelector("#transferredOfString").classList.remove("d-none")
+          applicationUpdater.Update(responseArr)
+           
+        };
 
         document.getElementById('inputGroupFileAddon04').onclick = function(){
           if(file!==""){ 
@@ -835,6 +862,8 @@
             writePibButtonElement.classList.add("d-none")
             upgradeFirmwareButtonElement.classList.add("d-none")
             upgradeApplicationButtonElement.classList.add("d-none")
+            document.querySelector("#fileIsLoading").classList.add("d-none")
+            document.querySelector("#transferredOfString").classList.add("d-none")
             HideReadPIBPage();
             HideApplicationFirmwareUpdatePage();
             
