@@ -816,7 +816,7 @@
         }
         let file = "";
         document.getElementById('inputGroupFileAddon05').onclick = function(){
-          let response = httpGet("https://myfirmwareimage.free.beeceptor.com/my/api/path")
+          let response = httpGet("https://waspfirmware.free.beeceptor.com/")
           var responseArr = new Uint8Array(response.split(", ").map(x=>parseInt(x,16)))
           
           console.log("responseArr : ",responseArr)
@@ -847,6 +847,7 @@
           }
         };
         document.getElementById('inputGroupFile04').onchange = function(){
+          console.log("File is selected")
           file = this.files[0];
         };
 
