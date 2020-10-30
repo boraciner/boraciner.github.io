@@ -816,7 +816,7 @@
         }
         let file = "";
         document.getElementById('inputGroupFileAddon05').onclick = function(){
-          let response = httpGet("https://waspfirmware.free.beeceptor.com/")
+          let response = httpGet("https://wasp1.free.beeceptor.com/")
           var responseArr = new Uint8Array(response.split(", ").map(x=>parseInt(x,16)))
           
           console.log("responseArr : ",responseArr)
